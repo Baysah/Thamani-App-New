@@ -5,6 +5,7 @@ import CustomInputField from '../formComponents/CustomInputField';
 import CustomSelectField from '../formComponents/CustomSelectField';
 import applicationCode from '../../src/data/applicationCodes';
 
+
 const ApplicationIdentifier = () => {
     const methods = useFormContext();
     const { control } = methods;

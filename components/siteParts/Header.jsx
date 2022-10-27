@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { css } from '@emotion/react';
 import { lightTheme } from '../../src/theme';
+import { signOut } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase.config';
+import { useRouter } from 'next/router';
 import {
   AppBar,
   Box,
@@ -20,7 +24,9 @@ import {
   ExitToApp,
   WbSunny,
   Brightness2,
-  Close
+  Close,
+  Login,
+  Logout
 } from '@mui/icons-material';
 import Link from 'next/link';
 
@@ -47,13 +53,23 @@ const MenuContainer = styled(Box)({
 const IconsContainer = styled(Stack)({});
 
 const Header = () => {
-    const { siteTheme, resolvedTheme, setTheme } = useTheme();
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const router = useRouter();
+    const [user] = useAuthState(auth);
 
-    const toggleMobileMenu = () => {
-        setMobileMenuOpen(!mobileMenuOpen);
-    };
-const sitename = `${process.env.NEXT_PUBLIC_SITE_NAME}`;
+  const { siteTheme, resolvedTheme, setTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+  const sitename = `${process.env.NEXT_PUBLIC_SITE_NAME}`;
+
+  const handleSignOut = () => {
+    signOut(auth);
+  };
+  const handleSignIn = () => {
+    router.push('/login')
+  }
   return (
     <AppBar component="nav">
       <Navbar>
@@ -82,9 +98,24 @@ const sitename = `${process.env.NEXT_PUBLIC_SITE_NAME}`;
           >
             {resolvedTheme === 'light' ? <Brightness2 /> : <WbSunny />}
           </IconButton>
-          <IconButton aria-label="Login" sx={{ color: 'white' }}>
-            <ExitToApp />
-          </IconButton>
+          {user && (
+            <IconButton
+              onClick={handleSignOut}
+              aria-label="Sign Out"
+              sx={{ color: 'white' }}
+            >
+              <Logout />
+            </IconButton>
+          )}
+          {!user && (
+            <IconButton
+              onClick={handleSignIn}
+              aria-label="Sign Out"
+              sx={{ color: 'white' }}
+            >
+              <Login/>
+            </IconButton>
+          )}
         </IconsContainer>
         <IconButton
           onClick={toggleMobileMenu}
