@@ -31,6 +31,7 @@ import {
 import Link from 'next/link';
 
 import { useTheme } from 'next-themes';
+import Cookies from 'js-cookie';
 
 const menuItems = [
   { name: 'Home', link: '/' },
@@ -65,7 +66,12 @@ const Header = () => {
   const sitename = `${process.env.NEXT_PUBLIC_SITE_NAME}`;
 
   const handleSignOut = () => {
+    //Sign the user out
     signOut(auth);
+    //Remove the loggedIn Cookie
+    Cookies.remove('loggedIn');
+    //Redirect user to the home lage
+    router.push('/')
   };
   const handleSignIn = () => {
     router.push('/login')

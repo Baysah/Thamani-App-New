@@ -10,7 +10,6 @@ const form = () => {
     const [user, error] =useAuthState(auth)
   return (
     <Box sx={{ my: 4 }}>
-        {error && (<div>Error</div>)}
         {user ? <FormStepper /> : (
             <Box>
                 <Typography>You will in to login to fill out a form</Typography>
@@ -23,5 +22,6 @@ const form = () => {
     </Box>
   );
 };
+
 
 export default form;

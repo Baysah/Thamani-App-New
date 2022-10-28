@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
 const LogIn = () => {
     const router = useRouter();
@@ -26,24 +27,27 @@ const LogIn = () => {
      const handleLogin = async (formData) => {
        const email = formData.email;
        const password = formData.password;
+       
        signInWithEmailAndPassword(auth, email, password)
          .then((userCredential) => {
            // Signed in
            const user = userCredential.user;
+           //Set loggedIn cookie to true
+           Cookies.set('loggedIn', true);
            //redirect to dashboard
            router.push('/form');
            const successMessage = () => {
-                <div>
-                  <Typography
-                    variant="p"
-                    color="primary"
-                    sx={{ fontWeight: 'bold' }}
-                  >
-                    Log in Success
-                  </Typography>
-                  <Typography>You have logged in</Typography>
-                </div>;
-           }
+             <div>
+               <Typography
+                 variant="p"
+                 color="primary"
+                 sx={{ fontWeight: 'bold' }}
+               >
+                 Log in Success
+               </Typography>
+               <Typography>You have logged in</Typography>
+             </div>;
+           };
            toast.success(successMessage, {
              position: toast.POSITION.TOP_CENTER,
              autoClose: 5000,
@@ -61,7 +65,9 @@ const LogIn = () => {
 
            const message = () => (
              <div>
-               <Typography variant="p" color="red" sx={{fontWeight: 'bold'}}>An Error Occured!</Typography>
+               <Typography variant="p" color="red" sx={{ fontWeight: 'bold' }}>
+                 An Error Occured!
+               </Typography>
                <Typography>{errorMessage}</Typography>
              </div>
            );
