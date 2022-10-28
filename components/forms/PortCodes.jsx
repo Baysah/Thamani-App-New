@@ -8,7 +8,8 @@ const PortCodes = () => {
   const methods = useFormContext();
   const { control } = methods;
   //set variable for the api port codes are being fetched from
-  const API_URL = 'http://localhost:3000/api/portCodes';
+  const API_URL =
+    'https://server.thamani.com:8443/IECUSoftServerRest-1.0/resources/tariff/portCodes';
 
   //Create state variable to store port codes
   const [options, setOptions] = useState([]);
