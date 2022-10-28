@@ -9,6 +9,7 @@ import '../src/styles/globals.css';
 import { GlobalStyles } from '@mui/material';
 import { ThemeProvider } from 'next-themes';
 import PageProvider from '../src/PageProvider';
+import { ToastContainer} from 'react-toastify';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

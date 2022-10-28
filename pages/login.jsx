@@ -5,6 +5,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase.config';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LogIn = () => {
     const router = useRouter();
@@ -24,15 +26,56 @@ const LogIn = () => {
      const handleLogin = async (formData) => {
        const email = formData.email;
        const password = formData.password;
-       try {
-            await signInWithEmailAndPassword(auth, email, password);
-            router.push('/form')
-       } catch(err) {
-            if (err.message === 'auth/invalid-credential') {
-              setErr('User does not exsist, Please check your email');
-            }
-            
-       }
+       signInWithEmailAndPassword(auth, email, password)
+         .then((userCredential) => {
+           // Signed in
+           const user = userCredential.user;
+           //redirect to dashboard
+           router.push('/form');
+           const successMessage = () => {
+                <div>
+                  <Typography
+                    variant="p"
+                    color="primary"
+                    sx={{ fontWeight: 'bold' }}
+                  >
+                    Log in Success
+                  </Typography>
+                  <Typography>You have logged in</Typography>
+                </div>;
+           }
+           toast.success(successMessage, {
+             position: toast.POSITION.TOP_CENTER,
+             autoClose: 5000,
+             hideProgressBar: false,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: true,
+             progress: undefined,
+             theme: 'light',
+           });
+         })
+         .catch((error) => {
+           const errorCode = error.code;
+           const errorMessage = error.message;
+
+           const message = () => (
+             <div>
+               <Typography variant="p" color="red" sx={{fontWeight: 'bold'}}>An Error Occured!</Typography>
+               <Typography>{errorMessage}</Typography>
+             </div>
+           );
+           toast(message, {
+             position: toast.POSITION.TOP_CENTER,
+             autoClose: 5000,
+             hideProgressBar: false,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: true,
+             progress: undefined,
+             theme: 'light',
+           });
+         });
      };
 
      console.log(err);
@@ -114,6 +157,7 @@ const LogIn = () => {
           )}
         </Box>
       </Paper>
+      <ToastContainer />
     </Box>
   );
 };
