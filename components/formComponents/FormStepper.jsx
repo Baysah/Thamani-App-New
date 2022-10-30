@@ -145,8 +145,7 @@ const FormStepper = () => {
     }),
     yup.object({
       depart_port_code: yup
-        .string()
-        .required('Processing Departure Port is required'),
+        .string(),
       app_id_code: yup
         .string()
         .required('Application Identifier Code is required'),
